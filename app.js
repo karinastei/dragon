@@ -7,9 +7,8 @@ let heroLeftSpace = 0
 let heroBottomSpace = 90
 let numberOfCollectables = 5
 let score = 0
-let projectileSpeed = 40
 let i = 0
-let intervals = []
+
 let isGameOver = false
 let collectableIntervalId, collectingIntervalId, collisionIntervalId
 
@@ -135,20 +134,31 @@ function randomBottom() {
     const value = 0.5;
     return Math.floor(Math.random() * (2 * value + 1) + value) * (Math.round(Math.random()) ? 1 : -1)
 }
+let projectileIntervals = [];
 
 function projectilesFlying() {
-    projectileFlying('15%', randomBottom())
-    projectileFlying('35%', randomBottom())
-    projectileFlying('55%', randomBottom())
-    projectileFlying('75%', randomBottom())
+    projectileIntervals.push(projectileFlying('15%', randomBottom()));
+    projectileIntervals.push(projectileFlying('35%', randomBottom()));
+    projectileIntervals.push(projectileFlying('55%', randomBottom()));
+    projectileIntervals.push(projectileFlying('75%', randomBottom()));
 }
-
+function speedInc() {
+    if (score >= 6 && projectileSpeed < 3) {
+        projectileSpeed =  score * 0.075
+        console.log(projectileSpeed)
+    }
+    if (score >= 40) {
+        projectileSpeed = 3
+    }
+}
+let projectileSpeed = 0.4
 function projectileFlying(id, number) {
     let projectile = document.getElementById(id)
-    intervals.push(setInterval(function () {
+    return setInterval(function() {
+        speedInc()
         let projectileLeft = Number(projectile.style.left.replace('%', ''))
         let projectileBottom = Number(projectile.style.bottom.replace('%', ''))
-        projectileLeft -= 0.5
+        projectileLeft -= projectileSpeed
         projectileBottom += number
         projectile.style.left = `${projectileLeft}%`
         projectile.style.bottom = `${projectileBottom}%`
@@ -161,7 +171,7 @@ function projectileFlying(id, number) {
             //changes projectile trajectory when starting again from the starting position, otherwise the trajectory would be the same for every flight
             number = randomBottom()
         }
-    }, projectileSpeed))
+    }, 40)
 }
 
 //try again button which will reload the page
@@ -182,7 +192,7 @@ function gameOver() {
     clearInterval(collectingIntervalId)
     clearInterval(collisionIntervalId)
     reloadButton()
-    console.log(intervals)
+    projectileIntervals.forEach(intervalId => clearInterval(intervalId))
 }
 
 //game ends when projectile hits the hero
