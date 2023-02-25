@@ -145,7 +145,6 @@ function projectilesFlying() {
 function speedInc() {
     if (score >= 6 && projectileSpeed < 3) {
         projectileSpeed =  score * 0.075
-        console.log(projectileSpeed)
     }
     if (score >= 40) {
         projectileSpeed = 3
