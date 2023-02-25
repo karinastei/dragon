@@ -10,6 +10,8 @@ let score = 0
 let projectileSpeed = 40
 let i = 0
 let intervals = []
+let isGameOver = false
+let collectableIntervalId, collectingIntervalId, collisionIntervalId
 
 //random number generator for positioning within the grid
 function createRandomNumberWithinGrid() {
@@ -159,7 +161,7 @@ function projectileFlying(id, number) {
             //changes projectile trajectory when starting again from the starting position, otherwise the trajectory would be the same for every flight
             number = randomBottom()
         }
-    }, projectileSpeed));
+    }, projectileSpeed))
 }
 
 //try again button which will reload the page
@@ -171,14 +173,16 @@ function reloadButton() {
 }
 
 function gameOver() {
+    isGameOver = true
     gameOverVisual.innerHTML = 'Game over!'
     // keycontrols won't work
     document.removeEventListener('keydown', control)
     //function intervals are cleared
-    intervals.map((interval) => {
-        clearInterval(interval);
-        reloadButton()
-    })
+    clearInterval(collectableIntervalId)
+    clearInterval(collectingIntervalId)
+    clearInterval(collisionIntervalId)
+    reloadButton()
+    console.log(intervals)
 }
 
 //game ends when projectile hits the hero
@@ -203,11 +207,11 @@ function collision() {
 //functions that start when start button is pressed and setting their intervals
 function start() {
     document.addEventListener('keydown', control)
-    setInterval(createCollectables, 500)
-    setInterval(collecting, 50)
+    collectableIntervalId = setInterval(createCollectables, 500);
+    collectingIntervalId = setInterval(collecting, 50);
     startCreatingEnemies()
     createProjectile()
-    setInterval(collision, 20)
+    collisionIntervalId = setInterval(collision, 20);
     projectilesFlying()
     //remove start button when the game starts
     let removedButton = document.getElementById("startButton")
