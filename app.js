@@ -1,3 +1,4 @@
+document.body.style.overflow = 'hidden';
 const grid = document.querySelector('.grid')
 const hero = document.querySelector('.hero')
 const collectables = document.getElementsByClassName("collectable")
