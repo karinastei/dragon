@@ -205,8 +205,8 @@ function collision() {
         let projectileBottom = Number(projectile.style.bottom.replace('%', ''))
         let heroBottom = Number(hero.style.bottom.replace('%', ''))
         //defining the areas which can't overlap or game ends
-        if (((projectileLeft - 4) <= heroLeft) &&
-            ((projectileLeft + 4) >= heroLeft) &&
+        if (((projectileLeft - 3) <= heroLeft) &&
+            ((projectileLeft + 3) >= heroLeft) &&
             ((projectileBottom - 5) <= heroBottom) &&
             ((projectileBottom + 5) >= heroBottom)
         ) {
